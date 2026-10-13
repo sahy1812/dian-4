@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Invitación Cumpleaños - Paw Patrol Dian Matias</title>
+  
+  <!-- Fuentes Google -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Luckiest+Guy&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <style>
+    /* =========================================================
+       PALETA DE COLORES PAW PATROL & ESTILOS BASE
+       ========================================================= */
+    :root {
+      --blue-primary: #21A0DB;
+      --red-primary: #BC201E;
+      --red-dark: #800f0e;
+      --yellow-primary: #FFE100;
+      --gold-accent: #FFD700;
+      --blue-dark: #293A6E;
+      --gray-light: #CBD5DC;
+      --orange-accent: #E0592B;
+      --white: #FFFFFF;
+      
+      --font-paw: 'Luckiest Guy', cursive;
+      --font-patrol: 'Alfa Slab One', cursive;
+      --font-body: 'Nunito', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--blue-primary);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.25) 0%, transparent 20%),
+        radial-gradient(circle at 85% 80%, rgba(255, 225, 0, 0.2) 0%, transparent 25%);
+      font-family: var(--font-body);
+      color: var(--blue-dark);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 15px 10px 40px;
+      overflow-x: hidden;
+    }
+
+    /* =========================================================
+       EFECTO DE TELÓN ROJO TEATRAL CON BORDES DORADOS Y PLIEGUES
+       ========================================================= */
+    #curtain-wrapper {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 999999;
+      pointer-events: none;
+      display: flex;
+      overflow: hidden;
+    }
+
+    .curtain-panel {
+      width: 50vw;
+      height: 100vh;
+      background: linear-gradient(
+        90deg, 
+        var(--red-dark) 0%, 
+        var(--red-primary) 12%, 
+        var(--red-dark) 25%, 
+        var(--red-primary) 37%, 
+        var(--red-dark) 50%, 
+        var(--red-primary) 62%, 
+        var(--red-dark) 75%, 
+        var(--red-primary) 88%, 
+        var(--red-dark) 100%
+      );
+      box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.9);
+      position: absolute;
+      top: 0;
+      transition: transform 1.6s cubic-bezier(0.77, 0, 0.175, 1);
+      will-change: transform;
+    }
+
+    /* Borde / Fleco dorado lujoso en el borde inferior e interior del telón */
+    .curtain-panel::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      height: 25px;
+      background: repeating-linear-gradient(
+        90deg,
+        #B8860B 0px,
+        #FFD700 8px,
+        #FFF8DC 12px,
+        #FFD700 16px,
+        #B8860B 24px
+      );
+      border-top: 3px solid #8B6508;
+      box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
+    }
+
+    .curtain-left {
+      left: 0;
+      transform-origin: left center;
+      border-right: 6px solid #FFD700;
+    }
+
+    .curtain-right {
+      right: 0;
+      transform-origin: right center;
+      border-left: 6px solid #FFD700;
+    }
+
+    /* Animación de apertura */
+    #curtain-wrapper.open .curtain-left {
+      transform: translateX(-102%) scaleX(0.85);
+    }
+
+    #curtain-wrapper.open .curtain-right {
+      transform: translateX(102%) scaleX(0.85);
+    }
+
+    /* =========================================================
+       OVERLAY INICIAL Y VIDEO INTRO
+       ========================================================= */
+    #intro-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: #000000;
+      z-index: 99999;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      transition: opacity 0.8s ease, visibility 0.8s ease;
+    }
+
+    #intro-overlay.hidden {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      display: none;
+    }
+
+    .start-btn {
+      background: var(--yellow-primary);
+      color: var(--blue-dark);
+      border: 5px solid var(--blue-dark);
+      font-family: var(--font-paw);
+      font-size: 1.8rem;
+      padding: 20px 40px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 8px 0 var(--blue-dark), 0 12px 25px rgba(0,0,0,0.5);
+      transition: transform 0.1s, box-shadow 0.1s;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      animation: pulse 1.5s infinite;
+      z-index: 1000001;
+      pointer-events: auto;
+    }
+
+    .start-btn:active {
+      transform: translateY(4px);
+      box-shadow: 0 4px 0 var(--blue-dark);
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+      100% { transform: scale(1); }
+    }
+
+    .skip-btn {
+      position: absolute;
+      bottom: 25px;
+      right: 25px;
+      background: var(--yellow-primary);
+      color: var(--blue-dark);
+      border: 3px solid var(--blue-dark);
+      font-family: var(--font-paw);
+      font-size: 1.1rem;
+      padding: 10px 22px;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 0 var(--blue-dark);
+      transition: transform 0.1s, box-shadow 0.1s;
+      z-index: 100000;
+      display: none;
+    }
+
+    /* =========================================================
+       CONTENEDOR PRINCIPAL DE LA INVITACIÓN
+       ========================================================= */
+    .invitation-card {
+      width: 100%;
+      max-width: 520px;
+      background: var(--white);
+      border: 6px solid var(--blue-dark);
+      border-radius: 35px;
+      box-shadow: 0 12px 0 var(--blue-dark), 0 20px 25px rgba(0, 0, 0, 0.25);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .header-banner {
+      background: var(--red-primary);
+      padding: 30px 20px 25px;
+      text-align: center;
+      border-bottom: 6px solid var(--blue-dark);
+      position: relative;
+      background-image: radial-gradient(circle at 50% 30%, #e63937 0%, var(--red-primary) 70%);
+    }
+
+    .badge-shield {
+      background: var(--yellow-primary);
+      border: 4px solid var(--blue-dark);
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 12px;
+      box-shadow: 0 5px 0 var(--blue-dark);
+      font-size: 2.2rem;
+      color: var(--red-primary);
+      transform: rotate(-5deg);
+    }
+
+    .title-paw {
+      font-family: var(--font-paw);
+      font-size: 2.8rem;
+      color: var(--yellow-primary);
+      text-shadow: 
+        3px 3px 0 var(--blue-dark),
+        -3px -3px 0 var(--blue-dark),
+        3px -3px 0 var(--blue-dark),
+        -3px 3px 0 var(--blue-dark),
+        0 6px 0 var(--blue-dark);
+      line-height: 0.95;
+      letter-spacing: 1px;
+    }
+
+    .title-patrol {
+      font-family: var(--font-patrol);
+      font-size: 1.4rem;
+      color: var(--white);
+      text-shadow: 2px 2px 0 var(--blue-dark), -2px -2px 0 var(--blue-dark), 2px -2px 0 var(--blue-dark), -2px 2px 0 var(--blue-dark);
+      letter-spacing: 3px;
+      margin-top: 5px;
+      text-transform: uppercase;
+    }
+
+    .subtitle-child {
+      background: var(--blue-primary);
+      color: var(--white);
+      display: inline-block;
+      padding: 6px 20px;
+      border-radius: 20px;
+      font-weight: 900;
+      font-size: 1.1rem;
+      margin-top: 15px;
+      border: 3px solid var(--blue-dark);
+      box-shadow: 0 4px 0 var(--blue-dark);
+    }
+
+    /* =========================================================
+       SECCIÓN VIDEO FORMATO TIKTOK / REELS (9:16 Fijo)
+       ========================================================= */
+    .video-section {
+      padding: 20px;
+      background: var(--gray-light);
+      border-bottom: 5px solid var(--blue-dark);
+      display: flex;
+      justify-content: center;
+    }
+
+    .video-container {
+      width: 100%;
+      max-width: 300px;
+      aspect-ratio: 9 / 16;
+      border-radius: 25px;
+      overflow: hidden;
+      border: 5px solid var(--blue-dark);
+      box-shadow: 0 8px 0 var(--blue-dark);
+      background: #000;
+      position: relative;
+    }
+
+    .video-container video {
+      width: 100%;
+      height: 100%;
+      display: block;
+      object-fit: cover;
+    }
+
+    /* =========================================================
+       CUENTA REGRESIVA Y DETALLES DEL EVENTO
+       ========================================================= */
+    .countdown-section {
+      padding: 25px 15px;
+      text-align: center;
+      background: var(--white);
+    }
+
+    .section-title {
+      font-family: var(--font-paw);
+      font-size: 1.8rem;
+      color: var(--red-primary);
+      text-shadow: 2px 2px 0 var(--yellow-primary);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .timer-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+    }
+
+    .timer-card {
+      background: var(--yellow-primary);
+      border: 3px solid var(--blue-dark);
+      border-radius: 16px;
+      padding: 10px 4px;
+      box-shadow: 0 5px 0 var(--blue-dark);
+    }
+
+    .timer-num {
+      font-family: var(--font-paw);
+      font-size: 1.8rem;
+      color: var(--blue-dark);
+      line-height: 1;
+    }
+
+    .timer-label {
+      font-size: 0.75rem;
+      font-weight: 900;
+      color: var(--red-primary);
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .details-section {
+      padding: 20px;
+      background: #f4f8fa;
+    }
+
+    .info-card {
+      background: var(--white);
+      border: 3px solid var(--blue-dark);
+      border-radius: 20px;
+      padding: 15px;
+      margin-bottom: 15px;
+      box-shadow: 0 5px 0 var(--blue-dark);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .info-icon {
+      background: var(--orange-accent);
+      color: var(--white);
+      width: 50px;
+      height: 50px;
+      border-radius: 15px;
+      border: 3px solid var(--blue-dark);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+
+    .info-text h4 {
+      font-family: var(--font-paw);
+      color: var(--blue-primary);
+      font-size: 1.2rem;
+    }
+
+    .info-text p {
+      font-weight: 800;
+      color: var(--blue-dark);
+      font-size: 0.95rem;
+    }
+
+    .btn-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      width: 100%;
+      padding: 14px;
+      border-radius: 50px;
+      border: 3px solid var(--blue-dark);
+      font-family: var(--font-paw);
+      font-size: 1.2rem;
+      text-decoration: none;
+      color: var(--white);
+      cursor: pointer;
+      box-shadow: 0 6px 0 var(--blue-dark);
+      transition: all 0.1s ease;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .btn-action:active {
+      transform: translateY(4px);
+      box-shadow: 0 2px 0 var(--blue-dark);
+    }
+
+    .btn-map { background: var(--blue-primary); }
+    .btn-confirm { background: #25D366; color: #ffffff; }
+    .btn-decline { background: var(--red-primary); }
+
+    .rsvp-box {
+      background: var(--yellow-primary);
+      border: 3px solid var(--blue-dark);
+      border-radius: 25px;
+      padding: 20px;
+      box-shadow: 0 6px 0 var(--blue-dark);
+      margin-top: 20px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 15px;
+      border-radius: 15px;
+      border: 3px solid var(--blue-dark);
+      font-family: var(--font-body);
+      font-weight: 800;
+      font-size: 1rem;
+      margin-bottom: 12px;
+      outline: none;
+    }
+
+    .footer-credits {
+      text-align: center;
+      padding: 15px;
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: #6a7b8c;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =========================================================
+       CAPA DE TELÓN ROJO TEATRAL
+       ========================================================= -->
+  <div id="curtain-wrapper">
+    <div class="curtain-panel curtain-left"></div>
+    <div class="curtain-panel curtain-right"></div>
+  </div>
+
+  <!-- OVERLAY VIDEO INTRO -->
+  <div id="intro-overlay">
+    <button id="start-btn" class="start-btn" onclick="openInvitationWithCurtain()">
+      <i class="fa-solid fa-envelope-open"></i> ABRIR INVITACIÓN
+    </button>
+
+    <video id="intro-video" playsinline src="video/intro.mp4"></video>
+    <button id="skip-btn" class="skip-btn" onclick="closeIntro()">Saltar Intro <i class="fa-solid fa-forward"></i></button>
+  </div>
+
+  <!-- TARJETA PRINCIPAL DE INVITACIÓN -->
+  <div class="invitation-card">
+    
+    <div class="header-banner">
+      <div class="badge-shield">
+        <i class="fa-solid fa-paw"></i>
+      </div>
+      <div class="title-paw" id="child-name">Dian Matias</div>
+      <div class="title-patrol">¡MISIÓN CUMPLEAÑOS!</div>
+      <div class="subtitle-child" id="age-text">¡Cumple 4 Años!</div>
+    </div>
+
+    <!-- VIDEO TIKTOK DE INVITACIÓN -->
+    <div class="video-section">
+      <div class="video-container">
+        <video id="invitation-video" controls playsinline src="video/invitacion.mp4"></video>
+      </div>
+    </div>
+
+    <div class="countdown-section">
+      <div class="section-title">
+        <i class="fa-solid fa-stopwatch"></i> SOLO FALTAN
+      </div>
+      <div class="timer-grid">
+        <div class="timer-card">
+          <div class="timer-num" id="days">00</div>
+          <div class="timer-label">Días</div>
+        </div>
+        <div class="timer-card">
+          <div class="timer-num" id="hours">00</div>
+          <div class="timer-label">Horas</div>
+        </div>
+        <div class="timer-card">
+          <div class="timer-num" id="minutes">00</div>
+          <div class="timer-label">Minutos</div>
+        </div>
+        <div class="timer-card">
+          <div class="timer-num" id="seconds">00</div>
+          <div class="timer-label">Seg</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="details-section">
+      
+      <div class="info-card">
+        <div class="info-icon" style="background: var(--red-primary);">
+          <i class="fa-solid fa-calendar-days"></i>
+        </div>
+        <div class="info-text">
+          <h4>FECHA Y HORA</h4>
+          <p id="event-date-text">Cargando fecha...</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon" style="background: var(--blue-primary);">
+          <i class="fa-solid fa-location-dot"></i>
+        </div>
+        <div class="info-text">
+          <h4>LUGAR DE LA MISIÓN</h4>
+          <p id="event-location-text">Cargando ubicación...</p>
+        </div>
+      </div>
+
+      <a id="btn-map-link" href="#" target="_blank" class="btn-action btn-map">
+        <i class="fa-solid fa-map-location-dot"></i> Ver Ubicación en Maps
+      </a>
+
+      <div class="rsvp-box">
+        <div class="section-title" style="font-size: 1.5rem; margin-bottom: 10px;">
+          <i class="fa-solid fa-envelope-open-text"></i> CONFIRMAR ASISTENCIA
+        </div>
+        
+        <input type="text" id="guest-name" class="input-field" placeholder="Escribe tu nombre o familia...">
+
+        <button onclick="sendRSVP(true)" class="btn-action btn-confirm">
+          <i class="fa-brands fa-whatsapp"></i> ¡Sí Asistiré!
+        </button>
+        
+        <button onclick="sendRSVP(false)" class="btn-action btn-decline" style="margin-bottom:0;">
+          <i class="fa-solid fa-xmark"></i> No podré asistir
+        </button>
+      </div>
+
+    </div>
+
+    <div class="footer-credits">
+      ¡Te esperamos para celebrar en grande! 🐾
+    </div>
+
+  </div>
+
+  <script>
+    /* Configuración principal del evento */
+    const INVITATION_CONFIG = {
+      childName: "Dian Matias",
+      ageText: "¡Cumple 4 Años!",
+      // 7 de Noviembre de 2026 a las 12:00 PM (Mes 10 = Noviembre en JavaScript)
+      eventTargetDate: new Date(2026, 10, 7, 12, 0, 0),
+      dateFormatted: "Sábado 7 de Noviembre de 2026 - 12:00 PM",
+      locationFormatted: "Presiona abajo para ver la dirección exacta en el mapa",
+      googleMapsUrl: "https://share.google/xDQbaR8oHVSjxzX7K",
+      whatsappNumber: "529512290970"
+    };
+
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("child-name").innerText = INVITATION_CONFIG.childName;
+      document.getElementById("age-text").innerText = INVITATION_CONFIG.ageText;
+      document.getElementById("event-date-text").innerText = INVITATION_CONFIG.dateFormatted;
+      document.getElementById("event-location-text").innerText = INVITATION_CONFIG.locationFormatted;
+      document.getElementById("btn-map-link").href = INVITATION_CONFIG.googleMapsUrl;
+
+      const introVideo = document.getElementById("intro-video");
+      introVideo.addEventListener("ended", closeIntro);
+
+      startCountdown();
+    });
+
+    /* Función principal para animar el telón rojo y reproducir el intro con sonido */
+    function openInvitationWithCurtain() {
+      const startBtn = document.getElementById("start-btn");
+      const skipBtn = document.getElementById("skip-btn");
+      const introVideo = document.getElementById("intro-video");
+      const curtainWrapper = document.getElementById("curtain-wrapper");
+
+      // 1. Abrir el telón rojo
+      curtainWrapper.classList.add("open");
+
+      // 2. Ocultar el botón inicial y mostrar elementos de video
+      startBtn.style.display = "none";
+      introVideo.style.display = "block";
+      skipBtn.style.display = "block";
+
+      // 3. Reproducir video intro con sonido activado
+      introVideo.muted = false;
+      introVideo.play().catch((err) => {
+        console.log("Error al reproducir video intro:", err);
+      });
+    }
+
+    function closeIntro() {
+      const overlay = document.getElementById("intro-overlay");
+      const introVideo = document.getElementById("intro-video");
+      
+      if (!overlay.classList.contains("hidden")) {
+        overlay.classList.add("hidden");
+        introVideo.pause();
+      }
+    }
+
+    /* Cálculo exacto de la cuenta regresiva */
+    function startCountdown() {
+      function updateTimer() {
+        const now = new Date().getTime();
+        const distance = INVITATION_CONFIG.eventTargetDate.getTime() - now;
+
+        if (distance < 0) {
+          document.getElementById("days").innerText = "00";
+          document.getElementById("hours").innerText = "00";
+          document.getElementById("minutes").innerText = "00";
+          document.getElementById("seconds").innerText = "00";
+          return;
+        }
+
+        const d = Math.floor(distance / (1000 * 60 * 60 * 24));
+        const h = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        const m = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        const s = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("days").innerText = d < 10 ? '0' + d : d;
+        document.getElementById("hours").innerText = h < 10 ? '0' + h : h;
+        document.getElementById("minutes").innerText = m < 10 ? '0' + m : m;
+        document.getElementById("seconds").innerText = s < 10 ? '0' + s : s;
+      }
+
+      updateTimer();
+      setInterval(updateTimer, 1000);
+    }
+
+    /* Envío de mensaje personalizado de asistencia por WhatsApp */
+    function sendRSVP(attending) {
+      const guestName = document.getElementById("guest-name").value.trim();
+      const nameText = guestName ? guestName : "Un invitado";
+      
+      let message = "";
+      if (attending) {
+        message = `¡Hola! Soy *${nameText}*. ¡Confirmo mi asistencia al cumpleaños de ${INVITATION_CONFIG.childName}! 🐾🎉`;
+      } else {
+        message = `¡Hola! Soy *${nameText}*. Lamentablemente no podré asistir al cumpleaños de ${INVITATION_CONFIG.childName}. ¡Les deseo una super fiesta! 🐾`;
+      }
+
+      const encodedMessage = encodeURIComponent(message);
+      const waUrl = `https://wa.me/${INVITATION_CONFIG.whatsappNumber}?text=${encodedMessage}`;
+      
+      window.open(waUrl, "_blank");
+    }
+  </script>
+</body>
+</html>
