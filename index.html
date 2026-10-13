@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Invitación Cumpleaños - Dian Matias</title>
   
   <!-- Fuentes Google -->
@@ -11,6 +11,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Alfa+Slab+One&family=Luckiest+Guy&family=Nunito:wght@700;800;900&display=swap" rel="stylesheet">
   <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
     :root {
@@ -32,6 +34,7 @@
       margin: 0;
       padding: 0;
       user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
 
     body {
@@ -49,6 +52,117 @@
       overflow-x: hidden;
     }
 
+    /* =========================================================
+       BOTÓN REDONDO AZUL ESTILO PAW PATROL CON BORDE METÁLICO
+       ========================================================= */
+    .round-blue-btn, .btn-badge-blue {
+      position: relative;
+      background: radial-gradient(circle at 35% 35%, #34b0ed 0%, #177cb0 70%, #0d4a6b 100%);
+      border: 6px solid #cbd5e1;
+      outline: 4px solid #64748b;
+      box-shadow: 
+        0 0 0 2px #f8fafc,
+        0 12px 25px rgba(0,0,0,0.6),
+        inset 0 4px 8px rgba(255,255,255,0.4),
+        inset 0 -6px 12px rgba(0,0,0,0.4);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s, opacity 0.5s ease;
+      touch-action: manipulation;
+    }
+
+    .round-blue-btn {
+      position: absolute;
+      z-index: 100005;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      gap: 6px;
+      animation: pulseRound 1.6s infinite ease-in-out;
+    }
+
+    .btn-badge-blue {
+      width: 105px;
+      height: 105px;
+      border-radius: 50%;
+      border-width: 4px;
+      outline-width: 3px;
+      gap: 2px;
+    }
+
+    .round-blue-btn .btn-icon, .btn-badge-blue .btn-icon {
+      color: var(--yellow-primary);
+      text-shadow: 
+        2px 2px 0 var(--blue-dark),
+        -2px -2px 0 var(--blue-dark),
+        2px -2px 0 var(--blue-dark),
+        -2px 2px 0 var(--blue-dark),
+        0 4px 6px rgba(0,0,0,0.5);
+    }
+
+    .round-blue-btn .btn-icon { font-size: 2.8rem; }
+    .btn-badge-blue .btn-icon { font-size: 1.5rem; }
+
+    .round-blue-btn .btn-text, .btn-badge-blue .btn-text {
+      font-family: var(--font-paw);
+      color: var(--yellow-primary);
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 
+        2px 2px 0 var(--blue-dark),
+        -2px -2px 0 var(--blue-dark),
+        2px -2px 0 var(--blue-dark),
+        -2px 2px 0 var(--blue-dark),
+        0 3px 5px rgba(0,0,0,0.5);
+      line-height: 1.1;
+      text-align: center;
+    }
+
+    .round-blue-btn .btn-text { font-size: 1.15rem; }
+    .btn-badge-blue .btn-text { font-size: 0.75rem; }
+
+    .round-blue-btn:hover, .btn-badge-blue:hover {
+      transform: scale(1.08);
+      background: radial-gradient(circle at 35% 35%, #4ac0f7 0%, #1e8fcb 70%, #0f577e 100%);
+    }
+
+    .round-blue-btn:active, .btn-badge-blue:active {
+      transform: scale(0.95);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
+    }
+
+    /* =========================================================
+       CAPA INTRO & VIDEO COMPLETO PARA MÓVIL
+       ========================================================= */
+    #intro-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      background-color: #000;
+      z-index: 100000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    #intro-video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    /* =========================================================
+       EFECTO TELÓN ROJO
+       ========================================================= */
     #curtain-container {
       position: fixed;
       top: 0;
@@ -81,86 +195,12 @@
       z-index: 100000;
     }
 
-    .curtain-left {
-      left: 0;
-    }
+    .curtain-left { left: 0; }
+    .curtain-right { right: 0; }
 
-    .curtain-right {
-      right: 0;
-    }
-
-    #curtain-container.open .curtain-left {
-      transform: translateX(-100%);
-    }
-
-    #curtain-container.open .curtain-right {
-      transform: translateX(100%);
-    }
-
-    #curtain-container.hidden {
-      display: none !important;
-    }
-
-    .round-blue-btn {
-      position: absolute;
-      z-index: 100005;
-      width: 170px;
-      height: 170px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #34b0ed 0%, #177cb0 70%, #0d4a6b 100%);
-      border: 8px solid #cbd5e1;
-      outline: 4px solid #64748b;
-      box-shadow: 
-        0 0 0 2px #f8fafc,
-        0 12px 25px rgba(0,0,0,0.6),
-        inset 0 4px 8px rgba(255,255,255,0.4),
-        inset 0 -6px 12px rgba(0,0,0,0.4);
-      cursor: pointer;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      animation: pulseRound 1.6s infinite ease-in-out;
-      transition: transform 0.2s, opacity 0.5s ease;
-    }
-
-    .round-blue-btn .btn-icon {
-      font-size: 2.8rem;
-      color: var(--yellow-primary);
-      text-shadow: 
-        2px 2px 0 var(--blue-dark),
-        -2px -2px 0 var(--blue-dark),
-        2px -2px 0 var(--blue-dark),
-        -2px 2px 0 var(--blue-dark),
-        0 4px 6px rgba(0,0,0,0.5);
-    }
-
-    .round-blue-btn .btn-text {
-      font-family: var(--font-paw);
-      font-size: 1.15rem;
-      color: var(--yellow-primary);
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      text-shadow: 
-        2px 2px 0 var(--blue-dark),
-        -2px -2px 0 var(--blue-dark),
-        2px -2px 0 var(--blue-dark),
-        -2px 2px 0 var(--blue-dark),
-        0 3px 5px rgba(0,0,0,0.5);
-      line-height: 1.1;
-      text-align: center;
-    }
-
-    .round-blue-btn:hover {
-      transform: scale(1.08);
-      background: radial-gradient(circle at 35% 35%, #4ac0f7 0%, #1e8fcb 70%, #0f577e 100%);
-    }
-
-    .round-blue-btn:active {
-      transform: scale(0.95);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
-    }
+    #curtain-container.open .curtain-left { transform: translateX(-100%); }
+    #curtain-container.open .curtain-right { transform: translateX(100%); }
+    #curtain-container.hidden { display: none !important; }
 
     #curtain-container.open .round-blue-btn {
       opacity: 0;
@@ -173,41 +213,9 @@
       100% { transform: scale(1); }
     }
 
-    #intro-video-layer {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: #000;
-      z-index: 99998;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    #intro-video {
-      width: 100%;
-      height: 100%;
-      object-fit: contain;
-    }
-
-    .skip-btn {
-      position: absolute;
-      bottom: 25px;
-      right: 25px;
-      background: var(--yellow-primary);
-      color: var(--blue-dark);
-      border: 3px solid var(--blue-dark);
-      font-family: var(--font-paw);
-      font-size: 1.1rem;
-      padding: 10px 22px;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 5px 0 var(--blue-dark);
-      z-index: 100001;
-    }
-
+    /* =========================================================
+       CONTENEDOR PRINCIPAL DE LA INVITACIÓN
+       ========================================================= */
     .invitation-card {
       width: 100%;
       max-width: 520px;
@@ -457,27 +465,31 @@
     }
   </style>
 </head>
-<body>
+<body class="bg-slate-900 text-white font-sans antialiased overflow-x-hidden selection:bg-yellow-400 selection:text-blue-900">
 
+  <!-- CAPA DE VIDEO INTRO PANTALLA COMPLETA -->
+  <div id="intro-overlay">
+    <video id="intro-video" playsinline muted>
+      <source src="video/intro.mp4" type="video/mp4">
+      Tu navegador no soporta video HTML5.
+    </video>
+    
+    <!-- BOTÓN SALTAR INTRO REDONDO AZUL DE ESTILO PAW PATROL -->
+    <button id="skip-intro-btn" type="button" class="btn-badge-blue absolute bottom-6 right-6 z-50">
+      <i class="fas fa-forward btn-icon"></i>
+      <span class="btn-text">SALTAR<br>INTRO</span>
+    </button>
+  </div>
+
+  <!-- CAPA DE TELÓN ROJO CON BOTÓN DE APERTURA -->
   <div id="curtain-container">
     <div class="curtain-panel curtain-left"></div>
     <div class="curtain-panel curtain-right"></div>
     
-    <!-- Botón Redondo Azul con Letras Amarillas y Contorno Plateado -->
-    <button id="open-curtain-btn" class="round-blue-btn" onclick="openCurtain()">
-      <div class="btn-icon">
-        <i class="fa-solid fa-paw"></i>
-      </div>
-      <div class="btn-text">
-        ABRIR<br>TELÓN
-      </div>
+    <button id="open-curtain-btn" type="button" class="round-blue-btn">
+      <i class="fa-solid fa-paw btn-icon"></i>
+      <span class="btn-text">ABRIR<br>TELÓN</span>
     </button>
-
-    <!-- Video Intro detrás del Telón -->
-    <div id="intro-video-layer">
-      <video id="intro-video" playsinline src="video/intro.mp4"></video>
-      <button id="skip-btn" class="skip-btn" onclick="finishIntro()">Saltar Intro <i class="fa-solid fa-forward"></i></button>
-    </div>
   </div>
 
   <!-- TARJETA PRINCIPAL DE INVITACIÓN -->
@@ -572,6 +584,7 @@
 
   </div>
 
+  <!-- SCRIPT CON CONTROL DIRECTO Y COMPATIBILIDAD TÁCTIL/MOVIL -->
   <script>
     const INVITATION_CONFIG = {
       childName: "Dian Matias",
@@ -583,37 +596,55 @@
       whatsappNumber: "529512290970"
     };
 
-    document.addEventListener("DOMContentLoaded", () => {
-      document.getElementById("child-name").innerText = INVITATION_CONFIG.childName;
-      document.getElementById("age-text").innerText = INVITATION_CONFIG.ageText;
-      document.getElementById("event-date-text").innerText = INVITATION_CONFIG.dateFormatted;
-      document.getElementById("event-location-text").innerText = INVITATION_CONFIG.locationFormatted;
-      document.getElementById("btn-map-link").href = INVITATION_CONFIG.googleMapsUrl;
-
+    function finishIntro() {
+      const overlay = document.getElementById("intro-overlay");
       const introVideo = document.getElementById("intro-video");
-      introVideo.addEventListener("ended", finishIntro);
+      const curtainContainer = document.getElementById("curtain-container");
+      const mainVideo = document.getElementById("invitation-video");
+      
+      if (introVideo) {
+        introVideo.pause();
+      }
+      if (overlay) {
+        overlay.style.display = "none";
+      }
+      if (curtainContainer) {
+        curtainContainer.classList.add("hidden");
+      }
 
-      startCountdown();
-    });
-
-    function openCurtain() {
-      const container = document.getElementById("curtain-container");
-      const introVideo = document.getElementById("intro-video");
-
-      container.classList.add("open");
-
-      introVideo.muted = false;
-      introVideo.play().catch((err) => {
-        console.log("Autoplay o video no disponible:", err);
-      });
+      // Reproducir automáticamente el video de la invitación al terminar o saltar la intro
+      if (mainVideo) {
+        mainVideo.muted = false;
+        mainVideo.currentTime = 0;
+        mainVideo.play().catch((err) => {
+          console.log("Autoplay del video de invitación bloqueado por el navegador:", err);
+        });
+      }
     }
 
-    function finishIntro() {
-      const container = document.getElementById("curtain-container");
+    function openCurtain() {
+      const curtainContainer = document.getElementById("curtain-container");
+      const introOverlay = document.getElementById("intro-overlay");
       const introVideo = document.getElementById("intro-video");
-      
-      introVideo.pause();
-      container.classList.add("hidden");
+
+      // Abrir paneles de telón
+      if (curtainContainer) {
+        curtainContainer.classList.add("open");
+      }
+
+      // Despliega capa de video intro
+      if (introOverlay) {
+        introOverlay.style.display = "flex";
+      }
+
+      // Inicia video con sonido desmutado
+      if (introVideo) {
+        introVideo.muted = false;
+        introVideo.currentTime = 0;
+        introVideo.play().catch((err) => {
+          console.log("Error al reproducir video intro:", err);
+        });
+      }
     }
 
     function startCountdown() {
@@ -660,6 +691,46 @@
       
       window.open(waUrl, "_blank");
     }
+
+    // Inicialización al cargar el documento
+    document.addEventListener("DOMContentLoaded", () => {
+      document.getElementById("child-name").innerText = INVITATION_CONFIG.childName;
+      document.getElementById("age-text").innerText = INVITATION_CONFIG.ageText;
+      document.getElementById("event-date-text").innerText = INVITATION_CONFIG.dateFormatted;
+      document.getElementById("event-location-text").innerText = INVITATION_CONFIG.locationFormatted;
+      document.getElementById("btn-map-link").href = INVITATION_CONFIG.googleMapsUrl;
+
+      // Event listener directo para botón de ABRIR TELÓN
+      const curtainBtn = document.getElementById("open-curtain-btn");
+      if (curtainBtn) {
+        const handleOpenCurtain = (e) => {
+          e.preventDefault();
+          openCurtain();
+        };
+        curtainBtn.addEventListener("click", handleOpenCurtain);
+        curtainBtn.addEventListener("touchstart", handleOpenCurtain, { passive: false });
+      }
+
+      // Event listener directo para botón SALTAR INTRO
+      const skipBtn = document.getElementById("skip-intro-btn");
+      if (skipBtn) {
+        const handleSkipIntro = (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          finishIntro();
+        };
+        skipBtn.addEventListener("click", handleSkipIntro);
+        skipBtn.addEventListener("touchstart", handleSkipIntro, { passive: false });
+      }
+
+      // Fin automático de intro al terminar video
+      const introVideo = document.getElementById("intro-video");
+      if (introVideo) {
+        introVideo.addEventListener("ended", finishIntro);
+      }
+
+      startCountdown();
+    });
   </script>
 </body>
 </html>
