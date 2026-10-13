@@ -49,9 +49,6 @@
       overflow-x: hidden;
     }
 
-    /* =========================================================
-       EFECTO TELÓN ROJO CON BOTÓN CENTRAL DE APERTURA
-       ========================================================= */
     #curtain-container {
       position: fixed;
       top: 0;
@@ -72,26 +69,24 @@
       width: 50vw;
       height: 100vh;
       background: linear-gradient(90deg, 
-        #8b0000 0%, 
-        #b22222 20%, 
-        #8b0000 40%, 
-        #dc143c 60%, 
-        #8b0000 80%, 
-        #800000 100%);
-      background-size: 80px 100%;
-      box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
-      transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+        #700000 0%, 
+        #a81414 20%, 
+        #700000 40%, 
+        #c91818 60%, 
+        #700000 80%, 
+        #5e0000 100%);
+      background-size: 90px 100%;
+      box-shadow: inset 0 0 60px rgba(0,0,0,0.85);
+      transition: transform 1.3s cubic-bezier(0.77, 0, 0.175, 1);
       z-index: 100000;
     }
 
     .curtain-left {
       left: 0;
-      border-right: 6px solid var(--yellow-primary);
     }
 
     .curtain-right {
       right: 0;
-      border-left: 6px solid var(--yellow-primary);
     }
 
     #curtain-container.open .curtain-left {
@@ -106,50 +101,78 @@
       display: none !important;
     }
 
-    /* Botón central en el telón */
-    .center-curtain-btn {
+    .round-blue-btn {
       position: absolute;
       z-index: 100005;
-      background: var(--yellow-primary);
-      color: var(--blue-dark);
-      border: 6px solid var(--red-primary);
-      outline: 4px solid var(--blue-dark);
-      font-family: var(--font-paw);
-      font-size: 1.8rem;
-      padding: 22px 42px;
-      border-radius: 60px;
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 35%, #34b0ed 0%, #177cb0 70%, #0d4a6b 100%);
+      border: 8px solid #cbd5e1;
+      outline: 4px solid #64748b;
+      box-shadow: 
+        0 0 0 2px #f8fafc,
+        0 12px 25px rgba(0,0,0,0.6),
+        inset 0 4px 8px rgba(255,255,255,0.4),
+        inset 0 -6px 12px rgba(0,0,0,0.4);
       cursor: pointer;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 8px 0 var(--blue-dark);
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 15px;
-      animation: pulseBtn 1.5s infinite;
+      justify-content: center;
+      gap: 6px;
+      animation: pulseRound 1.6s infinite ease-in-out;
       transition: transform 0.2s, opacity 0.5s ease;
+    }
+
+    .round-blue-btn .btn-icon {
+      font-size: 2.8rem;
+      color: var(--yellow-primary);
+      text-shadow: 
+        2px 2px 0 var(--blue-dark),
+        -2px -2px 0 var(--blue-dark),
+        2px -2px 0 var(--blue-dark),
+        -2px 2px 0 var(--blue-dark),
+        0 4px 6px rgba(0,0,0,0.5);
+    }
+
+    .round-blue-btn .btn-text {
+      font-family: var(--font-paw);
+      font-size: 1.15rem;
+      color: var(--yellow-primary);
       text-transform: uppercase;
+      letter-spacing: 1px;
+      text-shadow: 
+        2px 2px 0 var(--blue-dark),
+        -2px -2px 0 var(--blue-dark),
+        2px -2px 0 var(--blue-dark),
+        -2px 2px 0 var(--blue-dark),
+        0 3px 5px rgba(0,0,0,0.5);
+      line-height: 1.1;
+      text-align: center;
     }
 
-    .center-curtain-btn:hover {
+    .round-blue-btn:hover {
       transform: scale(1.08);
-      background: #fff066;
+      background: radial-gradient(circle at 35% 35%, #4ac0f7 0%, #1e8fcb 70%, #0f577e 100%);
     }
 
-    .center-curtain-btn:active {
-      transform: scale(0.95) translateY(4px);
-      box-shadow: 0 4px 0 var(--blue-dark);
+    .round-blue-btn:active {
+      transform: scale(0.95);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.6);
     }
 
-    #curtain-container.open .center-curtain-btn {
+    #curtain-container.open .round-blue-btn {
       opacity: 0;
       pointer-events: none;
     }
 
-    @keyframes pulseBtn {
+    @keyframes pulseRound {
       0% { transform: scale(1); }
-      50% { transform: scale(1.06); }
+      50% { transform: scale(1.07); }
       100% { transform: scale(1); }
     }
 
-    /* CAPA DE VIDEO INTRO PANTALLA COMPLETA */
     #intro-video-layer {
       position: absolute;
       top: 0;
@@ -185,9 +208,6 @@
       z-index: 100001;
     }
 
-    /* =========================================================
-       CONTENEDOR PRINCIPAL DE LA INVITACIÓN
-       ========================================================= */
     .invitation-card {
       width: 100%;
       max-width: 520px;
@@ -261,7 +281,6 @@
       box-shadow: 0 4px 0 var(--blue-dark);
     }
 
-    /* SECCIÓN VIDEO FORMATO TIKTOK */
     .video-section {
       padding: 20px;
       background: var(--gray-light);
@@ -289,7 +308,6 @@
       object-fit: cover;
     }
 
-    /* CUENTA REGRESIVA & DETALLES */
     .countdown-section {
       padding: 25px 15px;
       text-align: center;
@@ -441,14 +459,18 @@
 </head>
 <body>
 
-  <!-- CONTENEDOR TELÓN ROJO CON BOTÓN CENTRAL DE APERTURA -->
   <div id="curtain-container">
     <div class="curtain-panel curtain-left"></div>
     <div class="curtain-panel curtain-right"></div>
     
-    <!-- Botón Central -->
-    <button id="open-curtain-btn" class="center-curtain-btn" onclick="openCurtain()">
-      <i class="fa-solid fa-envelope-open"></i> ABRIR TELÓN
+    <!-- Botón Redondo Azul con Letras Amarillas y Contorno Plateado -->
+    <button id="open-curtain-btn" class="round-blue-btn" onclick="openCurtain()">
+      <div class="btn-icon">
+        <i class="fa-solid fa-paw"></i>
+      </div>
+      <div class="btn-text">
+        ABRIR<br>TELÓN
+      </div>
     </button>
 
     <!-- Video Intro detrás del Telón -->
@@ -470,7 +492,6 @@
       <div class="subtitle-child" id="age-text">¡Cumple 4 Años!</div>
     </div>
 
-    <!-- VIDEO TIKTOK DE INVITACIÓN -->
     <div class="video-section">
       <div class="video-container">
         <video id="invitation-video" controls playsinline src="video/invitacion.mp4"></video>
@@ -575,7 +596,6 @@
       startCountdown();
     });
 
-    // Abrir el telón y reproducir video con sonido
     function openCurtain() {
       const container = document.getElementById("curtain-container");
       const introVideo = document.getElementById("intro-video");
@@ -588,7 +608,6 @@
       });
     }
 
-    // Finalizar la etapa de intro y ocultar el telón
     function finishIntro() {
       const container = document.getElementById("curtain-container");
       const introVideo = document.getElementById("intro-video");
