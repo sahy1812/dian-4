@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Invitación Cumpleaños - Paw Patrol Dian Matias</title>
+  <title>Invitación Cumpleaños - Dian Matias</title>
   
   <!-- Fuentes Google -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -13,15 +13,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
   <style>
-    /* =========================================================
-       PALETA DE COLORES PAW PATROL & ESTILOS BASE
-       ========================================================= */
     :root {
       --blue-primary: #21A0DB;
       --red-primary: #BC201E;
-      --red-dark: #800f0e;
       --yellow-primary: #FFE100;
-      --gold-accent: #FFD700;
       --blue-dark: #293A6E;
       --gray-light: #CBD5DC;
       --orange-accent: #E0592B;
@@ -55,141 +50,123 @@
     }
 
     /* =========================================================
-       EFECTO DE TELÓN ROJO TEATRAL CON BORDES DORADOS Y PLIEGUES
+       EFECTO TELÓN ROJO CON BOTÓN CENTRAL DE APERTURA
        ========================================================= */
-    #curtain-wrapper {
+    #curtain-container {
       position: fixed;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      z-index: 999999;
-      pointer-events: none;
+      z-index: 99999;
       display: flex;
+      justify-content: center;
+      align-items: center;
       overflow: hidden;
+      pointer-events: auto;
     }
 
     .curtain-panel {
-      width: 50vw;
-      height: 100vh;
-      background: linear-gradient(
-        90deg, 
-        var(--red-dark) 0%, 
-        var(--red-primary) 12%, 
-        var(--red-dark) 25%, 
-        var(--red-primary) 37%, 
-        var(--red-dark) 50%, 
-        var(--red-primary) 62%, 
-        var(--red-dark) 75%, 
-        var(--red-primary) 88%, 
-        var(--red-dark) 100%
-      );
-      box-shadow: inset 0 0 80px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 0, 0, 0.9);
       position: absolute;
       top: 0;
-      transition: transform 1.6s cubic-bezier(0.77, 0, 0.175, 1);
-      will-change: transform;
-    }
-
-    /* Borde / Fleco dorado lujoso en el borde inferior e interior del telón */
-    .curtain-panel::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      width: 100%;
-      height: 25px;
-      background: repeating-linear-gradient(
-        90deg,
-        #B8860B 0px,
-        #FFD700 8px,
-        #FFF8DC 12px,
-        #FFD700 16px,
-        #B8860B 24px
-      );
-      border-top: 3px solid #8B6508;
-      box-shadow: 0 -4px 10px rgba(0,0,0,0.5);
+      width: 50vw;
+      height: 100vh;
+      background: linear-gradient(90deg, 
+        #8b0000 0%, 
+        #b22222 20%, 
+        #8b0000 40%, 
+        #dc143c 60%, 
+        #8b0000 80%, 
+        #800000 100%);
+      background-size: 80px 100%;
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.8);
+      transition: transform 1.2s cubic-bezier(0.77, 0, 0.175, 1);
+      z-index: 100000;
     }
 
     .curtain-left {
       left: 0;
-      transform-origin: left center;
-      border-right: 6px solid #FFD700;
+      border-right: 6px solid var(--yellow-primary);
     }
 
     .curtain-right {
       right: 0;
-      transform-origin: right center;
-      border-left: 6px solid #FFD700;
+      border-left: 6px solid var(--yellow-primary);
     }
 
-    /* Animación de apertura */
-    #curtain-wrapper.open .curtain-left {
-      transform: translateX(-102%) scaleX(0.85);
+    #curtain-container.open .curtain-left {
+      transform: translateX(-100%);
     }
 
-    #curtain-wrapper.open .curtain-right {
-      transform: translateX(102%) scaleX(0.85);
+    #curtain-container.open .curtain-right {
+      transform: translateX(100%);
     }
 
-    /* =========================================================
-       OVERLAY INICIAL Y VIDEO INTRO
-       ========================================================= */
-    #intro-overlay {
-      position: fixed;
+    #curtain-container.hidden {
+      display: none !important;
+    }
+
+    /* Botón central en el telón */
+    .center-curtain-btn {
+      position: absolute;
+      z-index: 100005;
+      background: var(--yellow-primary);
+      color: var(--blue-dark);
+      border: 6px solid var(--red-primary);
+      outline: 4px solid var(--blue-dark);
+      font-family: var(--font-paw);
+      font-size: 1.8rem;
+      padding: 22px 42px;
+      border-radius: 60px;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.5), 0 8px 0 var(--blue-dark);
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      animation: pulseBtn 1.5s infinite;
+      transition: transform 0.2s, opacity 0.5s ease;
+      text-transform: uppercase;
+    }
+
+    .center-curtain-btn:hover {
+      transform: scale(1.08);
+      background: #fff066;
+    }
+
+    .center-curtain-btn:active {
+      transform: scale(0.95) translateY(4px);
+      box-shadow: 0 4px 0 var(--blue-dark);
+    }
+
+    #curtain-container.open .center-curtain-btn {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    @keyframes pulseBtn {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.06); }
+      100% { transform: scale(1); }
+    }
+
+    /* CAPA DE VIDEO INTRO PANTALLA COMPLETA */
+    #intro-video-layer {
+      position: absolute;
       top: 0;
       left: 0;
       width: 100vw;
       height: 100vh;
-      background-color: #000000;
-      z-index: 99999;
+      background: #000;
+      z-index: 99998;
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
-      transition: opacity 0.8s ease, visibility 0.8s ease;
-    }
-
-    #intro-overlay.hidden {
-      opacity: 0;
-      visibility: hidden;
-      pointer-events: none;
     }
 
     #intro-video {
       width: 100%;
       height: 100%;
       object-fit: contain;
-      display: none;
-    }
-
-    .start-btn {
-      background: var(--yellow-primary);
-      color: var(--blue-dark);
-      border: 5px solid var(--blue-dark);
-      font-family: var(--font-paw);
-      font-size: 1.8rem;
-      padding: 20px 40px;
-      border-radius: 50px;
-      cursor: pointer;
-      box-shadow: 0 8px 0 var(--blue-dark), 0 12px 25px rgba(0,0,0,0.5);
-      transition: transform 0.1s, box-shadow 0.1s;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      animation: pulse 1.5s infinite;
-      z-index: 1000001;
-      pointer-events: auto;
-    }
-
-    .start-btn:active {
-      transform: translateY(4px);
-      box-shadow: 0 4px 0 var(--blue-dark);
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.05); }
-      100% { transform: scale(1); }
     }
 
     .skip-btn {
@@ -205,9 +182,7 @@
       border-radius: 50px;
       cursor: pointer;
       box-shadow: 0 5px 0 var(--blue-dark);
-      transition: transform 0.1s, box-shadow 0.1s;
-      z-index: 100000;
-      display: none;
+      z-index: 100001;
     }
 
     /* =========================================================
@@ -251,7 +226,7 @@
 
     .title-paw {
       font-family: var(--font-paw);
-      font-size: 2.8rem;
+      font-size: 2.7rem;
       color: var(--yellow-primary);
       text-shadow: 
         3px 3px 0 var(--blue-dark),
@@ -286,9 +261,7 @@
       box-shadow: 0 4px 0 var(--blue-dark);
     }
 
-    /* =========================================================
-       SECCIÓN VIDEO FORMATO TIKTOK / REELS (9:16 Fijo)
-       ========================================================= */
+    /* SECCIÓN VIDEO FORMATO TIKTOK */
     .video-section {
       padding: 20px;
       background: var(--gray-light);
@@ -316,9 +289,7 @@
       object-fit: cover;
     }
 
-    /* =========================================================
-       CUENTA REGRESIVA Y DETALLES DEL EVENTO
-       ========================================================= */
+    /* CUENTA REGRESIVA & DETALLES */
     .countdown-section {
       padding: 25px 15px;
       text-align: center;
@@ -470,22 +441,21 @@
 </head>
 <body>
 
-  <!-- =========================================================
-       CAPA DE TELÓN ROJO TEATRAL
-       ========================================================= -->
-  <div id="curtain-wrapper">
+  <!-- CONTENEDOR TELÓN ROJO CON BOTÓN CENTRAL DE APERTURA -->
+  <div id="curtain-container">
     <div class="curtain-panel curtain-left"></div>
     <div class="curtain-panel curtain-right"></div>
-  </div>
-
-  <!-- OVERLAY VIDEO INTRO -->
-  <div id="intro-overlay">
-    <button id="start-btn" class="start-btn" onclick="openInvitationWithCurtain()">
-      <i class="fa-solid fa-envelope-open"></i> ABRIR INVITACIÓN
+    
+    <!-- Botón Central -->
+    <button id="open-curtain-btn" class="center-curtain-btn" onclick="openCurtain()">
+      <i class="fa-solid fa-envelope-open"></i> ABRIR TELÓN
     </button>
 
-    <video id="intro-video" playsinline src="video/intro.mp4"></video>
-    <button id="skip-btn" class="skip-btn" onclick="closeIntro()">Saltar Intro <i class="fa-solid fa-forward"></i></button>
+    <!-- Video Intro detrás del Telón -->
+    <div id="intro-video-layer">
+      <video id="intro-video" playsinline src="video/intro.mp4"></video>
+      <button id="skip-btn" class="skip-btn" onclick="finishIntro()">Saltar Intro <i class="fa-solid fa-forward"></i></button>
+    </div>
   </div>
 
   <!-- TARJETA PRINCIPAL DE INVITACIÓN -->
@@ -582,12 +552,10 @@
   </div>
 
   <script>
-    /* Configuración principal del evento */
     const INVITATION_CONFIG = {
       childName: "Dian Matias",
       ageText: "¡Cumple 4 Años!",
-      // 7 de Noviembre de 2026 a las 12:00 PM (Mes 10 = Noviembre en JavaScript)
-      eventTargetDate: new Date(2026, 10, 7, 12, 0, 0),
+      eventTargetDate: new Date(2026, 10, 7, 12, 0, 0), // 7 Noviembre 2026, 12:00 PM
       dateFormatted: "Sábado 7 de Noviembre de 2026 - 12:00 PM",
       locationFormatted: "Presiona abajo para ver la dirección exacta en el mapa",
       googleMapsUrl: "https://share.google/xDQbaR8oHVSjxzX7K",
@@ -602,44 +570,33 @@
       document.getElementById("btn-map-link").href = INVITATION_CONFIG.googleMapsUrl;
 
       const introVideo = document.getElementById("intro-video");
-      introVideo.addEventListener("ended", closeIntro);
+      introVideo.addEventListener("ended", finishIntro);
 
       startCountdown();
     });
 
-    /* Función principal para animar el telón rojo y reproducir el intro con sonido */
-    function openInvitationWithCurtain() {
-      const startBtn = document.getElementById("start-btn");
-      const skipBtn = document.getElementById("skip-btn");
+    // Abrir el telón y reproducir video con sonido
+    function openCurtain() {
+      const container = document.getElementById("curtain-container");
       const introVideo = document.getElementById("intro-video");
-      const curtainWrapper = document.getElementById("curtain-wrapper");
 
-      // 1. Abrir el telón rojo
-      curtainWrapper.classList.add("open");
+      container.classList.add("open");
 
-      // 2. Ocultar el botón inicial y mostrar elementos de video
-      startBtn.style.display = "none";
-      introVideo.style.display = "block";
-      skipBtn.style.display = "block";
-
-      // 3. Reproducir video intro con sonido activado
       introVideo.muted = false;
       introVideo.play().catch((err) => {
-        console.log("Error al reproducir video intro:", err);
+        console.log("Autoplay o video no disponible:", err);
       });
     }
 
-    function closeIntro() {
-      const overlay = document.getElementById("intro-overlay");
+    // Finalizar la etapa de intro y ocultar el telón
+    function finishIntro() {
+      const container = document.getElementById("curtain-container");
       const introVideo = document.getElementById("intro-video");
       
-      if (!overlay.classList.contains("hidden")) {
-        overlay.classList.add("hidden");
-        introVideo.pause();
-      }
+      introVideo.pause();
+      container.classList.add("hidden");
     }
 
-    /* Cálculo exacto de la cuenta regresiva */
     function startCountdown() {
       function updateTimer() {
         const now = new Date().getTime();
@@ -668,7 +625,6 @@
       setInterval(updateTimer, 1000);
     }
 
-    /* Envío de mensaje personalizado de asistencia por WhatsApp */
     function sendRSVP(attending) {
       const guestName = document.getElementById("guest-name").value.trim();
       const nameText = guestName ? guestName : "Un invitado";
@@ -677,7 +633,7 @@
       if (attending) {
         message = `¡Hola! Soy *${nameText}*. ¡Confirmo mi asistencia al cumpleaños de ${INVITATION_CONFIG.childName}! 🐾🎉`;
       } else {
-        message = `¡Hola! Soy *${nameText}*. Lamentablemente no podré asistir al cumpleaños de ${INVITATION_CONFIG.childName}. ¡Les deseo una super fiesta! 🐾`;
+        message = `¡Hola! Soy *${nameText}*. Lamentablemente no podré asistir al cumpleaños de ${INVITATION_CONFIG.childName}. ¡Les deseo una súper fiesta! 🐾`;
       }
 
       const encodedMessage = encodeURIComponent(message);
